@@ -14,7 +14,7 @@ export const getUserTokensCollection = async (db: any, userId: number) => {
   try {
     const collections = await db
       .where("tik.user_id", userId)
-      .select('c.id', 'c.name', 'c.reward')
+      .select('c.id', 'c.name', 'c.reward', 'c.description', 'c.picture_binary')
       .distinctOn('c.id')
       .from(`${TOKEN_IN_USER} as tik`)
       .leftJoin(`${TOKEN} as t`, 't.id', 'tik.token_id')

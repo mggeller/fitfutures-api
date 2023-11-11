@@ -25,7 +25,7 @@ const getUserTokensCollection = (db, userId) => __awaiter(void 0, void 0, void 0
     try {
         const collections = yield db
             .where("tik.user_id", userId)
-            .select('c.id', 'c.name', 'c.reward')
+            .select('c.id', 'c.name', 'c.reward', 'c.description', 'c.picture_binary')
             .distinctOn('c.id')
             .from(`${constants_1.TOKEN_IN_USER} as tik`)
             .leftJoin(`${constants_1.TOKEN} as t`, 't.id', 'tik.token_id')
