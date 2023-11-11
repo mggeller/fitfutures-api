@@ -22,6 +22,10 @@
       {
         "src": "/treasures/(.*)",
         "dest": "dist/src/index.js"
+      },
+      {
+        "src": "/users/register",
+        "dest": "dist/src/index.js"
       }
     ]
   }

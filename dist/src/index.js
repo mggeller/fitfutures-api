@@ -38,16 +38,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const treasureController = __importStar(require("./controllers/treasure-controller"));
+const userController = __importStar(require("./controllers/user-controller"));
 //For env File 
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 8000;
+app.use(express_1.default.json());
 app.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.send('Welcome to Express & TypeScript Server');
 }));
 app.get('/treasures', treasureController.getAll);
 app.get('/treasures/:id', treasureController.getTokenById);
 app.post('/treasures/generate', treasureController.generateTreasures);
+app.post('/users/register', userController.register);
 app.listen(port, () => {
     console.log(`Server is Fire at http://localhost:${port}`);
 });
