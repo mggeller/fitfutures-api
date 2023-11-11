@@ -8,15 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.connectToDatabase = void 0;
-const knex_1 = __importDefault(require("knex"));
-const knexfile_1 = __importDefault(require("../../knexfile"));
-const connectToDatabase = () => __awaiter(void 0, void 0, void 0, function* () {
-    const connection = (0, knex_1.default)(knexfile_1.default);
-    return connection;
+exports.getCollectionById = void 0;
+const constants_1 = require("../constants");
+const getCollectionById = (db, collectionId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const collection = yield db.where('id', collectionId).first('name').from(constants_1.COLLECTION);
+        return collection;
+    }
+    catch (error) {
+        console.error('Failed to get collection');
+    }
 });
-exports.connectToDatabase = connectToDatabase;
+exports.getCollectionById = getCollectionById;

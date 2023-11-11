@@ -17,3 +17,4 @@ export const getAllTokensByCollectionId = async (db: any, collectionId: number) 
         console.error('Failed to get All tokens belogning to Collection');
     }
 }
+

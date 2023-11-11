@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getTreasuresCompletedToday = exports.isTreasureEnabledForUser = exports.getUserOwnedCollectionsAndTokens = exports.completeChallenge = exports.registerUser = void 0;
 const database_1 = require("../database");
+const collection_repository_1 = require("../repositories/collection-repository");
 const token_in_user_repository_1 = require("../repositories/token-in-user-repository");
 const tokens_repository_1 = require("../repositories/tokens-repository");
 const user_in_treasure_repository_1 = require("../repositories/user-in-treasure-repository");
@@ -51,10 +52,11 @@ const completeChallenge = (userId, treasureId) => __awaiter(void 0, void 0, void
     };
     const db = yield (0, database_1.connectToDatabase)();
     const tokenInUserId = yield (0, token_in_user_repository_1.insertTokenInUser)(db, tokenInUser);
+    const collection = yield (0, collection_repository_1.getCollectionById)(db, tokenInTreasure.collection_id);
     if (!tokenInUserId) {
         return;
     }
-    return { id: tokenInTreasure.id, name: tokenInTreasure.name, picture_binary: tokenInTreasure.picture_binary };
+    return { id: tokenInTreasure.id, name: tokenInTreasure.name, picture_binary: tokenInTreasure.picture_binary, collection: collection.name };
 });
 exports.completeChallenge = completeChallenge;
 const getUserOwnedCollectionsAndTokens = (userId) => __awaiter(void 0, void 0, void 0, function* () {
