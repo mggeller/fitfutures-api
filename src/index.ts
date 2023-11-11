@@ -21,6 +21,7 @@ app.post('/treasures/generate', treasureController.generateTreasures);
 
 app.post('/users/register', userController.register);
 app.post('/users/complete', userController.complete);
+app.post('/users/isenabled', userController.isTreasureEnabled);
 app.get('/users/collections/:id', userController.getCollections);
 
 app.listen(port, () => {

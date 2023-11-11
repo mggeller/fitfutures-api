@@ -1,4 +1,4 @@
-import { completeChallenge, getUserOwnedCollectionsAndTokens, registerUser } from "../services/user-service";
+import { completeChallenge, getUserOwnedCollectionsAndTokens, isTreasureEnabledForUser, registerUser } from "../services/user-service";
 import { User } from "../types/user";
 import { Request, Response } from "express";
 
@@ -60,3 +60,23 @@ export const getCollections = async (req: Request, res: Response) => {
 
   res.status(200).json(collections);
 };
+
+export const isTreasureEnabled = async (req: Request, res: Response) => {
+  const { treasureId, userId } = req.body;
+
+  if (!treasureId || !userId) {
+    res.status(404).send("Did not find this User or Challenge");
+  }
+
+  if (isNaN(Number(treasureId))) {
+    res.status(404).send("Treasure id is in incorrect type");
+  }
+
+  if (isNaN(Number(userId))) {
+    res.status(404).send("User id is in incorrect type");
+  }
+
+  const response = await isTreasureEnabledForUser(userId, treasureId);
+
+  res.status(200).json(response);
+}

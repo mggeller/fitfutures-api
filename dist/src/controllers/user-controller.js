@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCollections = exports.complete = exports.register = void 0;
+exports.isTreasureEnabled = exports.getCollections = exports.complete = exports.register = void 0;
 const user_service_1 = require("../services/user-service");
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.body;
@@ -53,3 +53,18 @@ const getCollections = (req, res) => __awaiter(void 0, void 0, void 0, function*
     res.status(200).json(collections);
 });
 exports.getCollections = getCollections;
+const isTreasureEnabled = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { treasureId, userId } = req.body;
+    if (!treasureId || !userId) {
+        res.status(404).send("Did not find this User or Challenge");
+    }
+    if (isNaN(Number(treasureId))) {
+        res.status(404).send("Treasure id is in incorrect type");
+    }
+    if (isNaN(Number(userId))) {
+        res.status(404).send("User id is in incorrect type");
+    }
+    const response = yield (0, user_service_1.isTreasureEnabledForUser)(userId, treasureId);
+    res.status(200).json(response);
+});
+exports.isTreasureEnabled = isTreasureEnabled;

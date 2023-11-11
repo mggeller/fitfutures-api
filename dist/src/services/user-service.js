@@ -9,10 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserOwnedCollectionsAndTokens = exports.completeChallenge = exports.registerUser = void 0;
+exports.isTreasureEnabledForUser = exports.getUserOwnedCollectionsAndTokens = exports.completeChallenge = exports.registerUser = void 0;
 const database_1 = require("../database");
 const token_in_user_repository_1 = require("../repositories/token-in-user-repository");
 const tokens_repository_1 = require("../repositories/tokens-repository");
+const user_in_treasure_repository_1 = require("../repositories/user-in-treasure-repository");
 const user_repository_1 = require("../repositories/user-repository");
 const treasure_service_1 = require("./treasure-service");
 const registerUser = (name, age, weight, height) => __awaiter(void 0, void 0, void 0, function* () {
@@ -71,3 +72,9 @@ const getUserOwnedCollectionsAndTokens = (userId) => __awaiter(void 0, void 0, v
     return responseArray;
 });
 exports.getUserOwnedCollectionsAndTokens = getUserOwnedCollectionsAndTokens;
+const isTreasureEnabledForUser = (userId, treasureId) => __awaiter(void 0, void 0, void 0, function* () {
+    const db = yield (0, database_1.connectToDatabase)();
+    const userTreasure = yield (0, user_in_treasure_repository_1.getUserTreasureByIds)(db, userId, treasureId);
+    return userTreasure.length === 0 ? true : false;
+});
+exports.isTreasureEnabledForUser = isTreasureEnabledForUser;

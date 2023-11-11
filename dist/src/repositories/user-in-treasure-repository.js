@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUserTreasure = void 0;
+exports.getUserTreasureByIds = exports.updateUserTreasure = void 0;
 const constants_1 = require("../constants");
 const updateUserTreasure = (db, userInTreasure) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -21,3 +21,13 @@ const updateUserTreasure = (db, userInTreasure) => __awaiter(void 0, void 0, voi
     }
 });
 exports.updateUserTreasure = updateUserTreasure;
+const getUserTreasureByIds = (db, userId, treasureId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userTreasure = yield db.where('user_id', userId).andWhere('treasure_id', treasureId).select().from(constants_1.TREASURE_IN_USER);
+        return userTreasure;
+    }
+    catch (error) {
+        console.error('Failed to get Users treasure', error);
+    }
+});
+exports.getUserTreasureByIds = getUserTreasureByIds;

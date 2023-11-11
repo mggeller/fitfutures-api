@@ -1,6 +1,7 @@
 import { connectToDatabase } from "../database";
 import { getUserTokensByUserId, getUserTokensCollection, insertTokenInUser } from "../repositories/token-in-user-repository";
 import { getAllTokensByCollectionId } from "../repositories/tokens-repository";
+import { getUserTreasureByIds } from "../repositories/user-in-treasure-repository";
 import { insertUser } from "../repositories/user-repository";
 import { TokenInUser } from "../types/token-in-user";
 import { User } from "../types/user";
@@ -73,4 +74,11 @@ export const getUserOwnedCollectionsAndTokens = async (userId: number) => {
     }
 
     return responseArray;
+}
+
+export const isTreasureEnabledForUser = async (userId: number, treasureId: number) => {
+    const db = await connectToDatabase();
+    const userTreasure = await getUserTreasureByIds(db, userId, treasureId);
+
+    return userTreasure.length === 0 ? true : false;
 }

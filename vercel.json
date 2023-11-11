@@ -32,6 +32,10 @@
         "dest": "dist/src/index.js"
       },
       {
+        "src": "/users/isenabled",
+        "dest": "dist/src/index.js"
+      },
+      {
         "src": "/users/collections/(.*)",
         "dest": "dist/src/index.js"
       }

@@ -12,3 +12,12 @@ export const updateUserTreasure = async (
     console.error("Failed to update the Users treasure");
   }
 };
+
+export const getUserTreasureByIds = async (db: any, userId: number, treasureId: number) => {
+  try {
+    const userTreasure = await db.where('user_id', userId).andWhere('treasure_id', treasureId).select().from(TREASURE_IN_USER);
+    return userTreasure;
+  } catch (error) {
+    console.error('Failed to get Users treasure', error);
+  }
+}
