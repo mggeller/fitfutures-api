@@ -5,8 +5,10 @@ import {
   getTreasures,
   insertTreasure,
 } from "../repositories/treasure-repository";
+import { updateUserTreasure } from "../repositories/user-in-treasure-repository";
 import { TokenInTreasure } from "../types/token-in-treasure";
 import { Treasure } from "../types/treasure";
+import { UserInTreasure } from "../types/user-in-treasure";
 import { getRandomInRange } from "../util/randomlanglat";
 
 export const generateNewTreasures = async () => {
@@ -49,5 +51,20 @@ export const getAllTreasures = async () => {
 export const getTokenInTreasure = async (treasureId: number) => {
     const db = await connectToDatabase();
     const response = await getTokensforTreasureById(db, treasureId);
-    return response;
+    return response[0];
+}
+
+export const updateUsersTreasure = async (userId: number, treasureId: number, enable: boolean) => {
+  const updatedDateTime = new Date().toISOString();
+  const updatedTreasureInUser: UserInTreasure = {
+    user_id: userId,
+    treasure_id: treasureId,
+    enabled: enable,
+    updated_at: updatedDateTime
+  };
+
+  const db = await connectToDatabase();
+  const response = await updateUserTreasure(db, updatedTreasureInUser);
+
+  return response;
 }

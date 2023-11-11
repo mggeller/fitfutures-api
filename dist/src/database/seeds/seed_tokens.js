@@ -8,32 +8,44 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.seed = void 0;
 const constants_1 = require("../../constants");
+const fs_1 = __importDefault(require("fs"));
 function seed(knex) {
     return __awaiter(this, void 0, void 0, function* () {
         // Deletes ALL existing entries
         yield knex(constants_1.TOKEN).del();
         const initDate = new Date().toISOString();
+        let seedData = [{ name: "Spider-Man", picture: "PictureURL", collection_id: 1, created_at: initDate, updated_at: initDate, picture_binary: 0 },
+            { name: "Iron Man", picture: "PictureURL", collection_id: 1, created_at: initDate, updated_at: initDate, picture_binary: 0 },
+            { name: "Captain America", picture: "PictureURL", collection_id: 1, created_at: initDate, updated_at: initDate, picture_binary: 0 },
+            { name: "Thor", picture: "PictureURL", collection_id: 1, created_at: initDate, updated_at: initDate, picture_binary: 0 },
+            { name: "Hulk", picture: "PictureURL", collection_id: 1, created_at: initDate, updated_at: initDate, picture_binary: 0 },
+            { name: "Salmon", picture: "PictureURL", collection_id: 2, created_at: initDate, updated_at: initDate, picture_binary: 0 },
+            { name: "Shark", picture: "PictureURL", collection_id: 2, created_at: initDate, updated_at: initDate, picture_binary: 0 },
+            { name: "Tuna", picture: "PictureURL", collection_id: 2, created_at: initDate, updated_at: initDate, picture_binary: 0 },
+            { name: "Käärija", picture: "PictureURL", collection_id: 3, created_at: initDate, updated_at: initDate, picture_binary: 0 },
+            { name: "Miisas", picture: "PictureURL", collection_id: 3, created_at: initDate, updated_at: initDate, picture_binary: 0 },
+            { name: "Mr. Beast ", picture: "PictureURL", collection_id: 3, created_at: initDate, updated_at: initDate, picture_binary: 0 },
+            { name: "David Dobrik", picture: "PictureURL", collection_id: 3, created_at: initDate, updated_at: initDate, picture_binary: 0 },
+            { name: "Kimi Räikkönen", picture: "PictureURL", collection_id: 3, created_at: initDate, updated_at: initDate, picture_binary: 0 },
+            { name: "Kalle Rovanperä", picture: "PictureURL", collection_id: 3, created_at: initDate, updated_at: initDate, picture_binary: 0 },
+            { name: "Erna Husko", picture: "PictureURL", collection_id: 3, created_at: initDate, updated_at: initDate, picture_binary: 0 }];
+        for (let i = 0; i < seedData.length; i++) {
+            const filename = `image-${i + 1}.png`;
+            const imageData = fs_1.default.readFileSync(filename);
+            console.log('imageData', imageData);
+            if (imageData) {
+                let seedObject = seedData[i];
+                seedObject.picture_binary = imageData;
+            }
+        }
         // Inserts seed entries
-        yield knex(constants_1.TOKEN).insert([
-            { name: "Hulk", picture: "PictureURL", collection_id: 1, created_at: initDate, updated_at: initDate },
-            { name: "Iron Man", picture: "PictureURL", collection_id: 1, created_at: initDate, updated_at: initDate },
-            { name: "Thor", picture: "PictureURL", collection_id: 1, created_at: initDate, updated_at: initDate },
-            { name: "Spider-Man", picture: "PictureURL", collection_id: 1, created_at: initDate, updated_at: initDate },
-            { name: "Captain Marvel", picture: "PictureURL", collection_id: 1, created_at: initDate, updated_at: initDate },
-            { name: "Salmon", picture: "PictureURL", collection_id: 2, created_at: initDate, updated_at: initDate },
-            { name: "Shark", picture: "PictureURL", collection_id: 2, created_at: initDate, updated_at: initDate },
-            { name: "Tuna", picture: "PictureURL", collection_id: 2, created_at: initDate, updated_at: initDate },
-            { name: "Käärija", picture: "PictureURL", collection_id: 3, created_at: initDate, updated_at: initDate },
-            { name: "Lordi", picture: "PictureURL", collection_id: 3, created_at: initDate, updated_at: initDate },
-            { name: "Blind Channel", picture: "PictureURL", collection_id: 3, created_at: initDate, updated_at: initDate },
-            { name: "Arttu Wiskari", picture: "PictureURL", collection_id: 3, created_at: initDate, updated_at: initDate },
-            { name: "Mikael Gabriel", picture: "PictureURL", collection_id: 3, created_at: initDate, updated_at: initDate },
-            { name: "Isac Elliot", picture: "PictureURL", collection_id: 3, created_at: initDate, updated_at: initDate },
-            { name: "Mr. Beast ", picture: "PictureURL", collection_id: 3, created_at: initDate, updated_at: initDate },
-        ]);
+        yield knex(constants_1.TOKEN).insert(seedData);
     });
 }
 exports.seed = seed;

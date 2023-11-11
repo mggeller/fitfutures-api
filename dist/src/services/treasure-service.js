@@ -9,11 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTokenInTreasure = exports.getAllTreasures = exports.generateNewTreasures = void 0;
+exports.updateUsersTreasure = exports.getTokenInTreasure = exports.getAllTreasures = exports.generateNewTreasures = void 0;
 const database_1 = require("../database");
 const token_in_treasure_repository_1 = require("../repositories/token-in-treasure-repository");
 const tokens_repository_1 = require("../repositories/tokens-repository");
 const treasure_repository_1 = require("../repositories/treasure-repository");
+const user_in_treasure_repository_1 = require("../repositories/user-in-treasure-repository");
 const randomlanglat_1 = require("../util/randomlanglat");
 const generateNewTreasures = () => __awaiter(void 0, void 0, void 0, function* () {
     const initialDate = new Date().toISOString();
@@ -51,6 +52,19 @@ exports.getAllTreasures = getAllTreasures;
 const getTokenInTreasure = (treasureId) => __awaiter(void 0, void 0, void 0, function* () {
     const db = yield (0, database_1.connectToDatabase)();
     const response = yield (0, token_in_treasure_repository_1.getTokensforTreasureById)(db, treasureId);
-    return response;
+    return response[0];
 });
 exports.getTokenInTreasure = getTokenInTreasure;
+const updateUsersTreasure = (userId, treasureId, enable) => __awaiter(void 0, void 0, void 0, function* () {
+    const updatedDateTime = new Date().toISOString();
+    const updatedTreasureInUser = {
+        user_id: userId,
+        treasure_id: treasureId,
+        enabled: enable,
+        updated_at: updatedDateTime
+    };
+    const db = yield (0, database_1.connectToDatabase)();
+    const response = yield (0, user_in_treasure_repository_1.updateUserTreasure)(db, updatedTreasureInUser);
+    return response;
+});
+exports.updateUsersTreasure = updateUsersTreasure;
