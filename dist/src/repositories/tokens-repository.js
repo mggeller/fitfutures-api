@@ -9,11 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllTokens = void 0;
+exports.getAllTokensByCollectionId = exports.getAllTokens = void 0;
 const constants_1 = require("../constants");
 const getAllTokens = (db) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const tokens = db.select().from(constants_1.TOKEN);
+        const tokens = yield db.select().from(constants_1.TOKEN);
         return tokens;
     }
     catch (error) {
@@ -21,3 +21,13 @@ const getAllTokens = (db) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getAllTokens = getAllTokens;
+const getAllTokensByCollectionId = (db, collectionId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const tokens = yield db.where('collection_id', collectionId).select().from(constants_1.TOKEN);
+        return tokens;
+    }
+    catch (error) {
+        console.error('Failed to get All tokens belogning to Collection');
+    }
+});
+exports.getAllTokensByCollectionId = getAllTokensByCollectionId;

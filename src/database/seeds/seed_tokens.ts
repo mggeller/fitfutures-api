@@ -27,7 +27,6 @@ export async function seed(knex: Knex): Promise<void> {
     for (let i = 0; i < seedData.length; i++) {
         const filename = `image-${i + 1}.png`;
         const imageData = fs.readFileSync(filename);
-        console.log('imageData', imageData);
         if (imageData) {
             let seedObject = seedData[i];
             seedObject.picture_binary = imageData;

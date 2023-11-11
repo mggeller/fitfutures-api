@@ -1,5 +1,6 @@
 import { connectToDatabase } from "../database";
-import { insertTokenInUser } from "../repositories/token-in-user-repository";
+import { getUserTokensByUserId, getUserTokensCollection, insertTokenInUser } from "../repositories/token-in-user-repository";
+import { getAllTokensByCollectionId } from "../repositories/tokens-repository";
 import { insertUser } from "../repositories/user-repository";
 import { TokenInUser } from "../types/token-in-user";
 import { User } from "../types/user";
@@ -36,7 +37,7 @@ export const completeChallenge = async (userId: number, treasureId: number) => {
 
     const tokenInTreasure = await getTokenInTreasure(treasureId);
 
-    if (!tokenInTreasure.id) {
+    if (!tokenInTreasure || !tokenInTreasure.id) {
         return;
     }
     const tokenInUser: TokenInUser = {
@@ -54,4 +55,22 @@ export const completeChallenge = async (userId: number, treasureId: number) => {
     }
 
     return { id: tokenInTreasure.id, name: tokenInTreasure.name, picture: tokenInTreasure.picture_binary};
+}
+
+export const getUserOwnedCollectionsAndTokens = async (userId: number) => {
+    const db = await connectToDatabase();
+    const collections = await getUserTokensCollection(db, userId);
+
+    let responseArray = [];
+
+    for(let i = 0; i < collections.length; i++) {
+        const collection = collections[i];
+        const tokens = await getAllTokensByCollectionId(db, collection.id);
+        const userOwnedTokens = await getUserTokensByUserId(db, userId, collection.id);
+        collection.tokens = tokens;
+        collection.userOwnedTokens = userOwnedTokens;
+        responseArray.push(collection);
+    }
+
+    return responseArray;
 }

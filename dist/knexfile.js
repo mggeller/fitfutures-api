@@ -40,7 +40,7 @@ const config = {
     },
     pool: {
         min: 2,
-        max: 20,
+        max: 40,
     },
     seeds: {
         directory: path.resolve(__dirname, "src", "database", "seeds"),

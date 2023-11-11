@@ -38,7 +38,6 @@ function seed(knex) {
         for (let i = 0; i < seedData.length; i++) {
             const filename = `image-${i + 1}.png`;
             const imageData = fs_1.default.readFileSync(filename);
-            console.log('imageData', imageData);
             if (imageData) {
                 let seedObject = seedData[i];
                 seedObject.picture_binary = imageData;

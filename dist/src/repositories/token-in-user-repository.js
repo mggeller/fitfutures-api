@@ -9,11 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.insertTokenInUser = void 0;
+exports.getUserTokensByUserId = exports.getUserTokensCollection = exports.insertTokenInUser = void 0;
 const constants_1 = require("../constants");
 const insertTokenInUser = (db, tokenInUser) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const ids = yield db.insert(tokenInUser, ['id']).into(constants_1.TOKEN_IN_USER);
+        const ids = yield db.insert(tokenInUser, ["id"]).into(constants_1.TOKEN_IN_USER);
         return ids && ids.length && ids[0];
     }
     catch (error) {
@@ -21,3 +21,29 @@ const insertTokenInUser = (db, tokenInUser) => __awaiter(void 0, void 0, void 0,
     }
 });
 exports.insertTokenInUser = insertTokenInUser;
+const getUserTokensCollection = (db, userId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const collections = yield db
+            .where("tik.user_id", userId)
+            .select('c.id', 'c.name', 'c.reward')
+            .distinctOn('c.id')
+            .from(`${constants_1.TOKEN_IN_USER} as tik`)
+            .leftJoin(`${constants_1.TOKEN} as t`, 't.id', 'tik.token_id')
+            .leftJoin(`${constants_1.COLLECTION} as c`, 'c.id', 't.collection_id');
+        return collections;
+    }
+    catch (error) {
+        console.error("Faled to get User Collections from db", error);
+    }
+});
+exports.getUserTokensCollection = getUserTokensCollection;
+const getUserTokensByUserId = (db, userId, collectionId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const tokens = yield db.where('tik.user_id', userId).andWhere('t.collection_id', collectionId).select('tik.token_id').from(`${constants_1.TOKEN_IN_USER} as tik`).leftJoin(`${constants_1.TOKEN} as t`, 't.id', 'tik.token_id');
+        return tokens;
+    }
+    catch (error) {
+        console.error('Failed to get User Tokens', error);
+    }
+});
+exports.getUserTokensByUserId = getUserTokensByUserId;

@@ -9,9 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.completeChallenge = exports.registerUser = void 0;
+exports.getUserOwnedCollectionsAndTokens = exports.completeChallenge = exports.registerUser = void 0;
 const database_1 = require("../database");
 const token_in_user_repository_1 = require("../repositories/token-in-user-repository");
+const tokens_repository_1 = require("../repositories/tokens-repository");
 const user_repository_1 = require("../repositories/user-repository");
 const treasure_service_1 = require("./treasure-service");
 const registerUser = (name, age, weight, height) => __awaiter(void 0, void 0, void 0, function* () {
@@ -38,7 +39,7 @@ const completeChallenge = (userId, treasureId) => __awaiter(void 0, void 0, void
     }
     // 2. Add Token to User
     const tokenInTreasure = yield (0, treasure_service_1.getTokenInTreasure)(treasureId);
-    if (!tokenInTreasure.id) {
+    if (!tokenInTreasure || !tokenInTreasure.id) {
         return;
     }
     const tokenInUser = {
@@ -55,3 +56,18 @@ const completeChallenge = (userId, treasureId) => __awaiter(void 0, void 0, void
     return { id: tokenInTreasure.id, name: tokenInTreasure.name, picture: tokenInTreasure.picture_binary };
 });
 exports.completeChallenge = completeChallenge;
+const getUserOwnedCollectionsAndTokens = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const db = yield (0, database_1.connectToDatabase)();
+    const collections = yield (0, token_in_user_repository_1.getUserTokensCollection)(db, userId);
+    let responseArray = [];
+    for (let i = 0; i < collections.length; i++) {
+        const collection = collections[i];
+        const tokens = yield (0, tokens_repository_1.getAllTokensByCollectionId)(db, collection.id);
+        const userOwnedTokens = yield (0, token_in_user_repository_1.getUserTokensByUserId)(db, userId, collection.id);
+        collection.tokens = tokens;
+        collection.userOwnedTokens = userOwnedTokens;
+        responseArray.push(collection);
+    }
+    return responseArray;
+});
+exports.getUserOwnedCollectionsAndTokens = getUserOwnedCollectionsAndTokens;

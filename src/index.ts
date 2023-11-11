@@ -21,6 +21,7 @@ app.post('/treasures/generate', treasureController.generateTreasures);
 
 app.post('/users/register', userController.register);
 app.post('/users/complete', userController.complete);
+app.get('/users/collections/:id', userController.getCollections);
 
 app.listen(port, () => {
   console.log(`Server is Fire at http://localhost:${port}`);
