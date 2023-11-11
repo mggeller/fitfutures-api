@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isTreasureEnabled = exports.getCollections = exports.complete = exports.register = void 0;
+exports.getTodayTreasureCount = exports.isTreasureEnabled = exports.getCollections = exports.complete = exports.register = void 0;
 const user_service_1 = require("../services/user-service");
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.body;
@@ -68,3 +68,16 @@ const isTreasureEnabled = (req, res) => __awaiter(void 0, void 0, void 0, functi
     res.status(200).json(response);
 });
 exports.isTreasureEnabled = isTreasureEnabled;
+const getTodayTreasureCount = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (isNaN(Number(req.params.id))) {
+        res.status(404);
+        return;
+    }
+    const todayCompletedTreasures = yield (0, user_service_1.getTreasuresCompletedToday)(Number(req.params.id));
+    if (!todayCompletedTreasures) {
+        res.status(404).send("Treasures completed today not found");
+    }
+    const treasuresCount = todayCompletedTreasures.length;
+    res.status(200).json(treasuresCount);
+});
+exports.getTodayTreasureCount = getTodayTreasureCount;

@@ -1,7 +1,7 @@
 import { connectToDatabase } from "../database";
 import { getUserTokensByUserId, getUserTokensCollection, insertTokenInUser } from "../repositories/token-in-user-repository";
 import { getAllTokensByCollectionId } from "../repositories/tokens-repository";
-import { getUserTreasureByIds } from "../repositories/user-in-treasure-repository";
+import { getTreasureAmountInTimeFrame, getUserTreasureByIds } from "../repositories/user-in-treasure-repository";
 import { insertUser } from "../repositories/user-repository";
 import { TokenInUser } from "../types/token-in-user";
 import { User } from "../types/user";
@@ -55,7 +55,7 @@ export const completeChallenge = async (userId: number, treasureId: number) => {
         return;
     }
 
-    return { id: tokenInTreasure.id, name: tokenInTreasure.name, picture: tokenInTreasure.picture_binary};
+    return { id: tokenInTreasure.id, name: tokenInTreasure.name, picture_binary: tokenInTreasure.picture_binary};
 }
 
 export const getUserOwnedCollectionsAndTokens = async (userId: number) => {
@@ -81,4 +81,14 @@ export const isTreasureEnabledForUser = async (userId: number, treasureId: numbe
     const userTreasure = await getUserTreasureByIds(db, userId, treasureId);
 
     return userTreasure.length === 0 ? true : false;
+}
+
+export const getTreasuresCompletedToday = async (userId: number) => {
+    const todayDate = new Date();
+	const todayBeginning = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate());
+    const todayEnd = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate() + 1);
+    const db = await connectToDatabase();
+    const treasures = await getTreasureAmountInTimeFrame(db, userId, todayBeginning.toISOString(), todayEnd.toISOString());
+
+    return treasures;
 }

@@ -21,3 +21,12 @@ export const getUserTreasureByIds = async (db: any, userId: number, treasureId: 
     console.error('Failed to get Users treasure', error);
   }
 }
+
+export const getTreasureAmountInTimeFrame = async (db: any, userId: number, fromDate: string, toDate: string) => {
+  try {
+    const treasures = await db.where('user_id', userId).andWhere('created_at', '>=', fromDate).andWhere('created_at', '<', toDate).select().from(TREASURE_IN_USER);
+    return treasures;
+  } catch (error) {
+    console.error('Failed to get treasure in specific time frame');
+  }
+}

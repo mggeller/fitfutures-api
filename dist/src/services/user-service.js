@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isTreasureEnabledForUser = exports.getUserOwnedCollectionsAndTokens = exports.completeChallenge = exports.registerUser = void 0;
+exports.getTreasuresCompletedToday = exports.isTreasureEnabledForUser = exports.getUserOwnedCollectionsAndTokens = exports.completeChallenge = exports.registerUser = void 0;
 const database_1 = require("../database");
 const token_in_user_repository_1 = require("../repositories/token-in-user-repository");
 const tokens_repository_1 = require("../repositories/tokens-repository");
@@ -54,7 +54,7 @@ const completeChallenge = (userId, treasureId) => __awaiter(void 0, void 0, void
     if (!tokenInUserId) {
         return;
     }
-    return { id: tokenInTreasure.id, name: tokenInTreasure.name, picture: tokenInTreasure.picture_binary };
+    return { id: tokenInTreasure.id, name: tokenInTreasure.name, picture_binary: tokenInTreasure.picture_binary };
 });
 exports.completeChallenge = completeChallenge;
 const getUserOwnedCollectionsAndTokens = (userId) => __awaiter(void 0, void 0, void 0, function* () {
@@ -78,3 +78,12 @@ const isTreasureEnabledForUser = (userId, treasureId) => __awaiter(void 0, void 
     return userTreasure.length === 0 ? true : false;
 });
 exports.isTreasureEnabledForUser = isTreasureEnabledForUser;
+const getTreasuresCompletedToday = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const todayDate = new Date();
+    const todayBeginning = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate());
+    const todayEnd = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate() + 1);
+    const db = yield (0, database_1.connectToDatabase)();
+    const treasures = yield (0, user_in_treasure_repository_1.getTreasureAmountInTimeFrame)(db, userId, todayBeginning.toISOString(), todayEnd.toISOString());
+    return treasures;
+});
+exports.getTreasuresCompletedToday = getTreasuresCompletedToday;

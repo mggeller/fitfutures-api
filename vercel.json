@@ -38,6 +38,10 @@
       {
         "src": "/users/collections/(.*)",
         "dest": "dist/src/index.js"
+      },
+      {
+        "src": "/users/treasures/(.*)",
+        "dest": "dist/src/index.js"
       }
     ]
   }

@@ -1,4 +1,4 @@
-import { completeChallenge, getUserOwnedCollectionsAndTokens, isTreasureEnabledForUser, registerUser } from "../services/user-service";
+import { completeChallenge, getTreasuresCompletedToday, getUserOwnedCollectionsAndTokens, isTreasureEnabledForUser, registerUser } from "../services/user-service";
 import { User } from "../types/user";
 import { Request, Response } from "express";
 
@@ -79,4 +79,20 @@ export const isTreasureEnabled = async (req: Request, res: Response) => {
   const response = await isTreasureEnabledForUser(userId, treasureId);
 
   res.status(200).json(response);
+}
+
+export const getTodayTreasureCount = async (req: Request, res: Response) => {
+  if (isNaN(Number(req.params.id))) {
+    res.status(404);
+    return;
+  }
+
+  const todayCompletedTreasures = await getTreasuresCompletedToday(Number(req.params.id));
+
+  if (!todayCompletedTreasures) {
+    res.status(404).send("Treasures completed today not found");
+  }
+
+  const treasuresCount = todayCompletedTreasures.length;
+  res.status(200).json(treasuresCount);
 }

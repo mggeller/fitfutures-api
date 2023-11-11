@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserTreasureByIds = exports.updateUserTreasure = void 0;
+exports.getTreasureAmountInTimeFrame = exports.getUserTreasureByIds = exports.updateUserTreasure = void 0;
 const constants_1 = require("../constants");
 const updateUserTreasure = (db, userInTreasure) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -31,3 +31,13 @@ const getUserTreasureByIds = (db, userId, treasureId) => __awaiter(void 0, void 
     }
 });
 exports.getUserTreasureByIds = getUserTreasureByIds;
+const getTreasureAmountInTimeFrame = (db, userId, fromDate, toDate) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const treasures = yield db.where('user_id', userId).andWhere('created_at', '>=', fromDate).andWhere('created_at', '<', toDate).select().from(constants_1.TREASURE_IN_USER);
+        return treasures;
+    }
+    catch (error) {
+        console.error('Failed to get treasure in specific time frame');
+    }
+});
+exports.getTreasureAmountInTimeFrame = getTreasureAmountInTimeFrame;
