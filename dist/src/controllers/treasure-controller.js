@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateTreasures = exports.getAll = void 0;
+exports.getTokenById = exports.generateTreasures = exports.getAll = void 0;
 const treasure_service_1 = require("../services/treasure-service");
 const getAll = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const treasures = yield (0, treasure_service_1.getAllTreasures)();
@@ -21,6 +21,15 @@ const getAll = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getAll = getAll;
 const generateTreasures = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, treasure_service_1.generateNewTreasures)();
-    res.status(200);
+    res.status(200).send("New treasures generated!");
 });
 exports.generateTreasures = generateTreasures;
+const getTokenById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (isNaN(Number(req.params.id))) {
+        res.status(404);
+        return;
+    }
+    const tokens = yield (0, treasure_service_1.getTokenInTreasure)(Number(req.params.id));
+    res.status(200).json(tokens);
+});
+exports.getTokenById = getTokenById;

@@ -9,16 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllTreasures = exports.generateNewTreasures = void 0;
+exports.getTokenInTreasure = exports.getAllTreasures = exports.generateNewTreasures = void 0;
 const database_1 = require("../database");
+const token_in_treasure_repository_1 = require("../repositories/token-in-treasure-repository");
+const tokens_repository_1 = require("../repositories/tokens-repository");
 const treasure_repository_1 = require("../repositories/treasure-repository");
 const randomlanglat_1 = require("../util/randomlanglat");
 const generateNewTreasures = () => __awaiter(void 0, void 0, void 0, function* () {
     const initialDate = new Date().toISOString();
-    let treasures = [];
     for (let i = 0; i < 15; i++) {
-        const randomLong = (0, randomlanglat_1.getRandomInRange)(35, 15, 6);
-        const randomLat = (0, randomlanglat_1.getRandomInRange)(70, 50, 6);
+        let randomLong = (0, randomlanglat_1.getRandomInRange)(24803056, 25000000, 0);
+        randomLong = randomLong / 1000000;
+        let randomLat = (0, randomlanglat_1.getRandomInRange)(60061567, 60261567, 0);
+        randomLat = randomLat / 1000000;
         const treasure = {
             coord_x: randomLong,
             coord_y: randomLat,
@@ -26,10 +29,18 @@ const generateNewTreasures = () => __awaiter(void 0, void 0, void 0, function* (
             created_at: initialDate,
             updated_at: initialDate,
         };
-        treasures.push(treasure);
+        const db = yield (0, database_1.connectToDatabase)();
+        const res = yield (0, treasure_repository_1.insertTreasure)(db, treasure);
+        const tokens = yield (0, tokens_repository_1.getAllTokens)(db);
+        const upperLimitId = tokens[tokens.length - 1].id;
+        const bottomLimitId = tokens[0].id;
+        const randomTokenId = (0, randomlanglat_1.getRandomInRange)(bottomLimitId, upperLimitId, 0);
+        const tokenInTreasure = {
+            token_id: randomTokenId,
+            treasure_id: res.id,
+        };
+        yield (0, token_in_treasure_repository_1.insertTokenInTreasure)(db, tokenInTreasure);
     }
-    const db = yield (0, database_1.connectToDatabase)();
-    const res = yield (0, treasure_repository_1.insertTreasure)(db, treasures);
 });
 exports.generateNewTreasures = generateNewTreasures;
 const getAllTreasures = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -37,3 +48,9 @@ const getAllTreasures = () => __awaiter(void 0, void 0, void 0, function* () {
     return yield (0, treasure_repository_1.getTreasures)(db);
 });
 exports.getAllTreasures = getAllTreasures;
+const getTokenInTreasure = (treasureId) => __awaiter(void 0, void 0, void 0, function* () {
+    const db = yield (0, database_1.connectToDatabase)();
+    const response = yield (0, token_in_treasure_repository_1.getTokensforTreasureById)(db, treasureId);
+    return response;
+});
+exports.getTokenInTreasure = getTokenInTreasure;

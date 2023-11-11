@@ -46,6 +46,7 @@ app.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.send('Welcome to Express & TypeScript Server');
 }));
 app.get('/treasures', treasureController.getAll);
+app.get('/treasures/:id', treasureController.getTokenById);
 app.post('/treasures/generate', treasureController.generateTreasures);
 app.listen(port, () => {
     console.log(`Server is Fire at http://localhost:${port}`);

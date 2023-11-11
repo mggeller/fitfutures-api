@@ -18,6 +18,10 @@
       {
         "src": "/treasures/generate",
         "dest": "dist/src/index.js"
+      },
+      {
+        "src": "/treasures/(.*)",
+        "dest": "dist/src/index.js"
       }
     ]
   }

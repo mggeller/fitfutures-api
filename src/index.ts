@@ -13,6 +13,7 @@ app.get('/', async (req: Request, res: Response) => {
 });
 
 app.get('/treasures', treasureController.getAll);
+app.get('/treasures/:id', treasureController.getTokenById);
 app.post('/treasures/generate', treasureController.generateTreasures);
 
 

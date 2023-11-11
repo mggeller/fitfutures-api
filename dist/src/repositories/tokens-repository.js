@@ -9,19 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTreasures = exports.insertTreasure = void 0;
+exports.getAllTokens = void 0;
 const constants_1 = require("../constants");
-const insertTreasure = (db, treasures) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllTokens = (db) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const ids = yield db.insert(treasures, ['id']).into(constants_1.TREASURE);
-        return ids && ids.length && ids[0];
+        const tokens = db.select().from(constants_1.TOKEN);
+        return tokens;
     }
     catch (error) {
-        console.error('failed inserting into DB', error);
+        console.error('Failed getting tokens');
     }
 });
-exports.insertTreasure = insertTreasure;
-const getTreasures = (db) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield db.select().from(constants_1.TREASURE);
-});
-exports.getTreasures = getTreasures;
+exports.getAllTokens = getAllTokens;

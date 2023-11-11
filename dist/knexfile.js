@@ -34,10 +34,6 @@ const connectionString = `postgres://${process.env.DB_USER}:${process.env.DB_PAS
 const config = {
     client: "pg",
     connection: connectionString,
-    pool: {
-        min: 2,
-        max: 10,
-    },
     migrations: {
         tableName: "knex_migrations",
         directory: path.resolve(__dirname, "src", "database", "migrations"),

@@ -9,19 +9,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTreasures = exports.insertTreasure = void 0;
+exports.getTokensforTreasureById = exports.insertTokenInTreasure = void 0;
 const constants_1 = require("../constants");
-const insertTreasure = (db, treasures) => __awaiter(void 0, void 0, void 0, function* () {
+const insertTokenInTreasure = (db, tokenInTreasure) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const ids = yield db.insert(treasures, ['id']).into(constants_1.TREASURE);
+        const ids = yield db.insert(tokenInTreasure, ["id"]).into(constants_1.TOKEN_IN_TREASURE);
         return ids && ids.length && ids[0];
     }
     catch (error) {
-        console.error('failed inserting into DB', error);
+        console.error("Failed inserting into DB", error);
     }
 });
-exports.insertTreasure = insertTreasure;
-const getTreasures = (db) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield db.select().from(constants_1.TREASURE);
+exports.insertTokenInTreasure = insertTokenInTreasure;
+const getTokensforTreasureById = (db, treasureId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const tokens = yield db.where('treasure_id', treasureId).select().from(constants_1.TOKEN_IN_TREASURE).leftJoin(constants_1.TOKEN, `${constants_1.TOKEN_IN_TREASURE}.token_id`, `${constants_1.TOKEN}.id`);
+        return tokens;
+    }
+    catch (error) {
+        console.error('Failed getting tokens for Treasure', error);
+    }
 });
-exports.getTreasures = getTreasures;
+exports.getTokensforTreasureById = getTokensforTreasureById;
