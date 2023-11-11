@@ -53,5 +53,5 @@ export const completeChallenge = async (userId: number, treasureId: number) => {
         return;
     }
 
-    return { id: tokenInTreasure.id, name: tokenInTreasure.name, picture: tokenInTreasure.picture };
+    return { id: tokenInTreasure.id, name: tokenInTreasure.name, picture: tokenInTreasure.picture_binary};
 }

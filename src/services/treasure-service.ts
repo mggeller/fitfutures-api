@@ -14,7 +14,7 @@ import { getRandomInRange } from "../util/randomlanglat";
 export const generateNewTreasures = async () => {
   const initialDate = new Date().toISOString();
 
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 16; i++) {
     let randomLong = getRandomInRange(24803056, 25000000, 0);
     randomLong = randomLong / 1000000;
     let randomLat = getRandomInRange(60061567, 60261567, 0);

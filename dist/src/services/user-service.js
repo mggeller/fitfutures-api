@@ -52,6 +52,6 @@ const completeChallenge = (userId, treasureId) => __awaiter(void 0, void 0, void
     if (!tokenInUserId) {
         return;
     }
-    return { id: tokenInTreasure.id, name: tokenInTreasure.name, picture: tokenInTreasure.picture };
+    return { id: tokenInTreasure.id, name: tokenInTreasure.name, picture: tokenInTreasure.picture_binary };
 });
 exports.completeChallenge = completeChallenge;

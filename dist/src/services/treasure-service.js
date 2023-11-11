@@ -18,7 +18,7 @@ const user_in_treasure_repository_1 = require("../repositories/user-in-treasure-
 const randomlanglat_1 = require("../util/randomlanglat");
 const generateNewTreasures = () => __awaiter(void 0, void 0, void 0, function* () {
     const initialDate = new Date().toISOString();
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 16; i++) {
         let randomLong = (0, randomlanglat_1.getRandomInRange)(24803056, 25000000, 0);
         randomLong = randomLong / 1000000;
         let randomLat = (0, randomlanglat_1.getRandomInRange)(60061567, 60261567, 0);

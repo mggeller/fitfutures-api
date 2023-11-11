@@ -13,6 +13,10 @@ const config = {
     tableName: "knex_migrations",
     directory: path.resolve(__dirname, "src", "database", "migrations"),
   },
+  pool: {
+    min: 2,
+    max: 20,
+  },
   seeds: {
     directory: path.resolve(__dirname, "src", "database", "seeds"),
   },
